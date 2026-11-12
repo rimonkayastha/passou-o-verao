@@ -1,0 +1,181 @@
+<html>
+    <head>
+        <title>Passou o Verao</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body style="background-color: #eaf4ff;">
+        <div class="title-body">
+            The flood is coming. Can you save your summer?
+        </div>
+        <div class="main-body">
+            <div class="buttons-body">
+                Pick your tool
+                <div class="buttons">
+                    <button id="rock-button">
+                        <div class="button-body">
+                            <img src="assets/rock.png" class="rock">
+                            <div class='button-text'>Rock</div>
+                        </div>
+                    </button>
+                    <button id="dam-button">
+                        <div class="button-body">
+                            <img src="assets/dam.png" class="rock">   
+                            <div class='button-text'>Dam</div>
+                        </div>
+                    </button>
+                    <button id="superman-button">
+                        <div class="button-body">
+                            <img src="assets/superman.png" class="rock">   
+                            <div class='button-text'>Superman</div>
+                        </div>
+                    </button>
+                    <button id="prayer-button">
+                        <div class="button-body">
+                            <img src="assets/prayer.png" class="rock">   
+                            <div class='button-text'>God</div>
+                        </div>
+                    </button>
+                </div>
+                <div class="clock-button-body">
+                    <button id="clock-button">
+                        <div class="button-body">
+                            <img src="assets/clock.png" class="rock">   
+                            <div class='button-text'>Clock</div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+            <div class="image">
+                <img src="assets/landscape.jpg" class="landscape">
+                <img src="assets/mountain_current.gif" class="mountain-current-1">
+                <img src="assets/mountain_current.gif" class="mountain-current-2">
+            </div>
+            <div class="results">
+                <div class="message">
+                    <!-- The Flood unfortunately doesn't stop. -->
+                </div>
+                <button id="retry-button" style="display: none;">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </body>
+    <script> 
+    const image = document.querySelector(".landscape");
+    const message = document.querySelector(".message");
+    const rockButton = document.querySelector("#rock-button");
+    const damButton = document.querySelector("#dam-button");
+    const supermanButton = document.querySelector("#superman-button");
+    const prayerButton = document.querySelector("#prayer-button");
+    const clockButton = document.querySelector("#clock-button");
+    const retryButton = document.querySelector("#retry-button");
+
+    const images = [
+        "assets/landscape.jpg",
+        "assets/mountain-flood-0.png",
+        "assets/mountain-flood-1.png",
+        "assets/mountain-flood-2.png",
+        "assets/flood-landscape.jpg",
+    ];
+
+    let currentImage = 0;
+    let imageInterval;
+
+    const outcomes = {
+        rock: {
+            endIndex: 4,
+            message: "The water goes around the rock. Your summer has faded."
+        },
+
+        dam: {
+            endIndex: 3,
+            message: "Every dam has a limit. The turbid water breaks it. Your summer has faded."
+        },
+
+        superman: {
+            endIndex: 4,
+            message: "Even Superman cannot slow the chaotic waters. Your summer has faded."
+        },
+
+        prayer: {
+            endIndex: 4,
+            message: "Parece que delle Deos se esquece. Fate betrays. Your summer has faded."
+        },
+
+        clock: {
+            endIndex: 2,
+            message: "Time, the only thing in order is brought to disorder. The flood stops. Your summer remains still."
+        }
+    };
+
+    function startSlideshow(outcome) {
+
+        if (imageInterval) return;
+        rockButton.disabled = true;
+        damButton.disabled = true;
+        supermanButton.disabled = true;
+        prayerButton.disabled = true;
+        clockButton.disabled = true;
+
+        imageInterval = setInterval(() => {
+
+            currentImage++;
+            image.src = images[currentImage];
+
+            if (currentImage >= outcome.endIndex) {
+
+                clearInterval(imageInterval);
+                imageInterval = null;
+
+                // Display this button's individual message
+                message.textContent = outcome.message;
+
+                retryButton.style.display = "block";
+            }
+
+        }, 2000);
+    }
+
+    rockButton.addEventListener("click", () => {
+        startSlideshow(outcomes.rock);
+    });
+
+    damButton.addEventListener("click", () => {
+        startSlideshow(outcomes.dam);
+    });
+
+    supermanButton.addEventListener("click", () => {
+        startSlideshow(outcomes.superman);
+    });
+
+    prayerButton.addEventListener("click", () => {
+        startSlideshow(outcomes.prayer);
+    });
+
+    clockButton.addEventListener("click", () => {
+        startSlideshow(outcomes.clock);
+    });
+
+    function retry() {
+
+        clearInterval(imageInterval);
+        imageInterval = null;
+
+        currentImage = 0;
+        image.src = images[0];
+
+        message.textContent = "";
+
+        retryButton.style.display = "none";
+
+        rockButton.disabled = false;
+        damButton.disabled = false;
+        supermanButton.disabled = false;
+        prayerButton.disabled = false;
+        clockButton.disabled = false;
+    }
+
+    retryButton.addEventListener("click", retry);
+
+    </script>
+</html>
